@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Author Dashboard</title>
+    <link rel="stylesheet" href="/main.css">
+</head>
+<body>
+    <%- include('nav', { title: 'Author Home', user: user }) %>
+    <header>
+        <h1>Author Dashboard</h1>
+    </header>
+    <% if (error) { %>
+        <p style="color: red;"><%= error %></p>
+    <% } %>
+    <section>
+        <% if (articles.length > 0) { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Created</th>
+                        <th>Last Modified</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% articles.forEach(article => { %>
+                        <tr>
+                            <td><%= article.title %></td>
+                            <td><%= new Date(article.created_at).toLocaleDateString() %></td>
+                            <td><%= new Date(article.updated_at).toLocaleDateString() %></td>
+                            <td>
+                                <a href="/author/edit-article/<%= article.id %>">Edit</a> |
+                                <form style="display: inline;" action="/author/delete-article/<%= article.id %>" method="post">
+                                    <button type="submit">Delete</button>
+                                </form>
+                                <% if (article.state === 'draft') { %> |
+                                <form style="display: inline;" action="/author/publish-article/<%= article.id %>" method="post">
+                                    <button type="submit">Publish</button>
+                                </form>
+                                <% } %>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <p>No articles found. <a href="/author/new-article">Create your first article.</a></p>
+        <% } %>
+    </section>
+    <a href="/author/new-article" class="button">Create New Article</a>
+</body>
+</html>

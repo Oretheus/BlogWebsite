@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reader Home</title>
+    <link rel="stylesheet" href="/main.css">
+</head>
+<body>
+    <%- include('nav', { title: 'Reader Home', user: user }) %>
+    <header>
+        <h1>Latest Articles</h1>
+    </header>
+    <section>
+        <% if (articles.length === 0) { %>
+            <p>No articles have been posted yet.</p>
+        <% } else { %>
+            <% articles.forEach(article => { %>
+                <div class="article">
+                    <h3><a href="/reader/article/<%= article.id %>"><%= article.title %></a></h3>
+                    <p>Author: <%= article.author_name %></p>
+                    <p>Published: <%= article.published_at %></p>
+                    <p>Likes: <%= article.likes %></p>
+                </div>
+            <% }); %>
+        <% } %>
+    </section>
+</body>
+</html>

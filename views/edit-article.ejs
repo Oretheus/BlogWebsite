@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><%= article && article.id ? 'Edit Article' : 'Create Article' %></title>
+    <link rel="stylesheet" href="/main.css">
+    <!-- TinyMCE -->
+    <script src="https://cdn.tiny.cloud/1/6wgtjt0eoqq4w61zxeyy9669bm9r857ndyclmot9txp4ha1o/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: '#content',
+            plugins: 'lists link image preview',
+            toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | link image',
+            menubar: 'file edit view insert format tools table help',
+            images_upload_url: '/upload-image' // Set up an endpoint for image uploading
+        });
+    </script>
+</head>
+<body>
+    <%- include('nav', { title: 'Edit Article', user: user }) %>
+    <header>
+        <h1><%= article && article.id ? 'Edit Article' : 'Create New Article' %></h1>
+    </header>
+    <form action="/author/<%= article && article.id ? `edit-article/${article.id}` : 'new-article' %>" method="POST" id="edit-article">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" value="<%= article.title %>" required>
+        <label for="content">Content:</label>
+        <textarea id="content" name="content"><%= article.content %></textarea>
+        <button type="submit"><%= article && article.id ? 'Save Changes' : 'Create Article' %></button>
+    </form>
+</body>
+<script>
+    document.getElementById('edit-article').addEventListener('submit', function() {
+        tinymce.triggerSave();  // Ensure content from TinyMCE is saved to textarea
+    });
+</script>    
+</html>

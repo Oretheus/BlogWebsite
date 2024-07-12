@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><%= article.title %></title>
+    <link rel="stylesheet" href="/public/main.css">
+</head>
+<body>
+    <%- include('nav', { title: article.title, user: user }) %>
+    <article>
+        <h2><%= article.title %></h2>
+        <div><%- article.content %></div> <!-- Render HTML content correctly -->
+        <p>Published: <%= article.published_at %></p>
+        <p>Likes: <span id="like-count"><%= article.likes %></span></p>
+        <button id="like-button"><%= liked ? 'Unlike' : 'Like' %></button>
+    </article>
+    <section>
+        <h3>Comments:</h3>
+        <% comments.forEach(comment => { %>
+            <div>
+                <p><%= comment.author_name %>: <%= comment.comment %></p>
+            </div>
+        <% }); %>
+        <% if (user) { %>
+            <form action="/reader/article/<%= article.id %>/comment" method="post">
+                <textarea name="comment" placeholder="Your comment" required></textarea>
+                <button type="submit">Add Comment</button>
+            </form>
+        <% } else { %>
+            <p>Please <a href="/auth/login">login</a> to add a comment.</p>
+        <% } %>
+    </section>
+    <a href="/reader/home">Back to Articles</a>
+
+    <script>
+        document.getElementById('like-button').addEventListener('click', function() {
+            fetch('/reader/article/<%= article.id %>/like', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('like-count').innerText = data.likes;
+                    document.getElementById('like-button').innerText = data.liked ? 'Unlike' : 'Like';
+                } else {
+                    alert('You must login in order to like a post.');
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>

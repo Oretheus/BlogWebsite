@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Settings</title>
+    <link rel="stylesheet" href="/main.css">
+</head>
+<body>
+    <%- include('nav', { title: 'Author Settings', user: user }) %>
+    <header>
+        <h1>Settings</h1>
+    </header>
+    <form action="/author/settings" method="POST">
+        <label for="blogTitle">Blog Title:</label>
+        <input type="text" id="blogTitle" name="blogTitle" value="<%= settings.blogTitle %>" required>
+        
+        <label for="authorName">Author Name:</label>
+        <input type="text" id="authorName" name="authorName" value="<%= settings.authorName %>" required>
+        
+        <button type="submit">Update Settings</button>
+    </form>
+</body>
+
+</html>

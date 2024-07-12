@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Author Dashboard</title>
+    <link rel="stylesheet" href="/main.css">
+</head>
+<body>
+    <%- include('nav', { title: 'Reader Home', user: user }) %>
+    <header>
+        <h1>My Articles</h1>
+    </header>
+    <section>
+        <% articles.forEach(article => { %>
+            <div class="article">
+                <h3><%= article.title %></h3>
+                <p><%= article.content.substring(0, 150) %>...</p>
+                <a href="/author/edit-article/<%= article.id %>">Edit</a>
+                <form action="/author/delete-article/<%= article.id %>" method="post">
+                    <button type="submit">Delete</button>
+                </form>
+            </div>
+        <% }); %>
+        <a href="/author/new-article">Create New Article</a>
+    </section>
+</body>
+</html>

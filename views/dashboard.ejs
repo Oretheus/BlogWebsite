@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/main.css">
+</head>
+<body>
+    <%- include('nav', { title: 'Reader Home', user: user }) %>
+    <header>
+        <h1>Site Dashboard</h1>
+    </header>
+    <section>
+        <h2>Site Statistics</h2>
+        <!-- Example of what might be included -->
+        <p>Number of articles: <%= stats.articlesCount %></p>
+        <p>Number of comments: <%= stats.commentsCount %></p>
+        <a href="/author/dashboard">Author's Dashboard</a>
+    </section>
+</body>
+</html>
